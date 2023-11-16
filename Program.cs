@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Azure;
@@ -22,7 +23,6 @@ namespace BlobStorageOperations
                 Console.WriteLine(e);
                 throw;
             }
-
         }
 
         private static async Task CreateContainerAndUploadBlobAsync()
@@ -39,6 +39,19 @@ namespace BlobStorageOperations
 
             // Upload the blob 
             BlobClient blobClient = blobContainerClient.GetBlobClient(BlobName);
+
+            Console.WriteLine($"Uploading blob '{blobClient.Name}'");
+            Console.WriteLine($"   > {blobClient.Uri}");
+
+            string fileToUploadPath = @"C:\Users\Mat\source\repos\BlobStorageOperations\LocalFiles\fileToUpload.html";
+            using FileStream fileStream = File.OpenRead(fileToUploadPath);
+            {
+                await blobClient.UploadAsync(fileStream,
+                    new BlobHttpHeaders()
+                    {
+                        ContentType = "text/html"
+                    });
+            }
         }
     }
 }

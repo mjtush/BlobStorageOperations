@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Configuration;
+using System;
 
 namespace BlobStorageOperations
 {
     static class BlobStorageData
     {
         // TODO: Add your connection string here:
-        private static readonly string _connectionString = "";
+        private static readonly string _connectionString = ConfigurationManager.ConnectionStrings["MyBlobStorageConnection"].ConnectionString;
         private static readonly string _blobContainerName = "stories";
         private static readonly string _blobName = "matstory.html";
 
