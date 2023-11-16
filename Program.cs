@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -43,7 +44,7 @@ namespace BlobStorageOperations
             Console.WriteLine($"Uploading blob '{blobClient.Name}'");
             Console.WriteLine($"   > {blobClient.Uri}");
 
-            string fileToUploadPath = @"C:\Users\Mat\source\repos\BlobStorageOperations\LocalFiles\fileToUpload.html";
+            string fileToUploadPath = ConfigurationManager.AppSettings["FileToUploadPath"];
             using FileStream fileStream = File.OpenRead(fileToUploadPath);
             {
                 await blobClient.UploadAsync(fileStream,
