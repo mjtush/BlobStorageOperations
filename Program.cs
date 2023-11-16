@@ -2,16 +2,19 @@
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Azure;
+using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
+using static BlobStorageOperations.BlobStorageData;
 
 namespace BlobStorageOperations
 {
-    internal class Program
+    internal static class Program
     {
-        private async static Task Main(string[] args)
+        private static async Task Main(string[] args)
         {
             try
             {
-                await CreateCOntainerAndUploadBlobAsync();
+                await CreateContainerAndUploadBlobAsync();
 
             }
             catch (RequestFailedException e)
@@ -22,9 +25,20 @@ namespace BlobStorageOperations
 
         }
 
-        private static async Task CreateCOntainerAndUploadBlobAsync()
+        private static async Task CreateContainerAndUploadBlobAsync()
         {
             // Create the Blob Container
+            BlobServiceClient blobServiceClient = new BlobServiceClient(ConnectionString);
+
+            BlobContainerClient blobContainerClient =
+                blobServiceClient.GetBlobContainerClient(BlobContainerName);
+
+            Console.WriteLine($"Creating blob container '{BlobContainerName}'");
+
+            await blobContainerClient.CreateIfNotExistsAsync(PublicAccessType.BlobContainer);
+
+            // Upload the blob 
+            BlobClient blobClient = blobContainerClient.GetBlobClient(BlobName);
         }
     }
 }
